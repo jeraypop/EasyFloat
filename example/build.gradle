@@ -1,0 +1,83 @@
+//apply plugin: 'com.android.application'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android-extensions'
+plugins {
+
+    alias libs.plugins.android.application
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.parcelize
+//    alias libs.plugins.room
+    alias libs.plugins.ksp
+//    alias libs.plugins.google.services
+}
+android {
+    namespace 'com.lzf.easyfloat.example'
+    compileSdk compile_sdk_version
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+
+    defaultConfig {
+        applicationId "com.lzf.easyfloat.example"
+        minSdk 21
+        targetSdk compile_sdk_version
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../example/release/easyfloat.keystore")
+            storePassword "123123"
+            keyAlias "easyfloat"
+            keyPassword "123123"
+        }
+    }
+
+    buildTypes {
+        release {
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "EasyFloat.apk"
+                }
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':easyfloat')
+    //kotlin
+    implementation(libs.kotlin.stdlib)
+    //androidX
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.cardview)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.junit)
+    implementation(libs.androidx.runner)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.material)
+    implementation 'cn.bingoogolapple:bga-swipebacklayout:2.0.1@aar'
+ 
+
+
+}

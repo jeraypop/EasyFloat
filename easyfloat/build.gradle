@@ -1,0 +1,56 @@
+//apply plugin: 'com.android.library'
+//apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android'
+//apply plugin: 'com.github.dcendents.android-maven'
+
+plugins {
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.parcelize
+//    alias libs.plugins.room
+    alias libs.plugins.ksp
+}
+group = 'com.github.princekin-f'
+android {
+    namespace 'com.lzf.easyfloat'
+    compileSdk compile_sdk_version
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+    defaultConfig {
+        minSdk 17
+        targetSdk compile_sdk_version
+        versionCode 1
+        versionName "1.0"
+
+        // aar 打包混淆配置
+        consumerProguardFiles "proguard-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(17))
+        }
+    }
+
+
+}
+
+dependencies {
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //kotlin
+    implementation(libs.kotlin.stdlib)
+}
+
