@@ -1,13 +1,17 @@
 package com.lzf.easyfloat.utils
 
+import android.app.Activity
 import android.app.Service
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Point
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Display
+import android.view.Surface
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -83,6 +87,27 @@ object DisplayUtils {
         return (spValue * fontScale + 0.5f).toInt()
     }
 
+    fun getDeviceRotation(context: Context): Int {
+        val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val display: Display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
+
+        return display.rotation
+    }
+
+    fun isDeviceLandscape(context: Context): Boolean {
+        val rotation = getDeviceRotation(context)
+
+        // 判断设备的旋转角度，分别为 90° 或 270° 表示横屏
+        return rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270
+    }
+
+    fun isDevicePortrait(context: Context): Boolean {
+        val rotation = getDeviceRotation(context)
+
+        // 判断设备的旋转角度，0° 或 180° 表示竖屏
+        return rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180
+    }
+
     /**
      * 获取屏幕宽度（显示宽度，横屏的时候可能会小于物理像素值）
      */
@@ -104,7 +129,12 @@ object DisplayUtils {
         val screenWidth = bounds.width()
 
         // 获取设备方向，如果是横屏，减去导航栏的高度
-        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            screenWidth
+//        } else {
+//            screenWidth - getNavigationBarCurrentHeight(context)
+//        }
+        return if (isDevicePortrait(context)) {
             screenWidth
         } else {
             screenWidth - getNavigationBarCurrentHeight(context)
@@ -335,6 +365,11 @@ object DisplayUtils {
         // 判断显示区域的宽度和高度差异来确认是否有导航栏
         return realWidth - displayWidth > 0 || realHeight - displayHeight > 0
     }
+
+    fun isLandscape(context: Context): Boolean {
+        return ((context as Activity).application.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+    }
+
 
 
 }
