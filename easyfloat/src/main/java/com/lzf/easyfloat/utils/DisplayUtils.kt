@@ -129,16 +129,16 @@ object DisplayUtils {
         val screenWidth = bounds.width()
 
         // 获取设备方向，如果是横屏，减去导航栏的高度
-//        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            screenWidth
-//        } else {
-//            screenWidth - getNavigationBarCurrentHeight(context)
-//        }
-        return if (isDevicePortrait(context)) {
+        return if (context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             screenWidth
         } else {
             screenWidth - getNavigationBarCurrentHeight(context)
         }
+//        return if (isDevicePortrait(context)) {
+//            screenWidth
+//        } else {
+//            screenWidth - getNavigationBarCurrentHeight(context)
+//        }
     }
 
     fun getScreenWidthLegacy(context: Context): Int {

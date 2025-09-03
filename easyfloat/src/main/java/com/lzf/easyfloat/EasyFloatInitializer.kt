@@ -10,9 +10,14 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.database.Cursor
 import android.net.Uri
+import android.util.Log
 import com.lzf.easyfloat.core.TouchUtils
+import com.lzf.easyfloat.core.TouchUtils.Companion.parentHeight
+import com.lzf.easyfloat.core.TouchUtils.Companion.parentWidth
+import com.lzf.easyfloat.data.FloatConfig
 import com.lzf.easyfloat.utils.DisplayUtils
 import com.lzf.easyfloat.utils.LifecycleUtils
+import com.lzf.easyfloat.utils.Logger
 
 /**
  * @author: liuzhenfeng
@@ -73,20 +78,26 @@ class EasyFloatInitializer : ContentProvider() {
     inner class OrientationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (Intent.ACTION_CONFIGURATION_CHANGED == intent?.action) {
+                val config = FloatConfig()
                 // 获取当前屏幕方向
                 val orientation = context?.resources?.configuration?.orientation
                 when (orientation) {
                     Configuration.ORIENTATION_LANDSCAPE -> {
                         // 横屏状态
                         // 在这里处理横屏逻辑
-                        TouchUtils.parentWidth = DisplayUtils.getScreenWidth(context)
-                        TouchUtils.parentHeight = DisplayUtils.getScreenHeight(context)
+                        parentWidth = DisplayUtils.getScreenWidth(context)
+//                        parentHeight = DisplayUtils.getScreenHeight(context)
+                        parentHeight = config.displayHeight.getDisplayRealHeight(context)
+                        Logger.e("屏幕方向", "横屏宽: "+parentWidth)
+                        Logger.e("屏幕方向", "横屏高: "+parentHeight)
                     }
                     Configuration.ORIENTATION_PORTRAIT -> {
                         // 竖屏状态
                         // 在这里处理竖屏逻辑
-                        TouchUtils.parentWidth = DisplayUtils.getScreenWidth(context)
-                        TouchUtils.parentHeight = DisplayUtils.getScreenHeight(context)
+                        parentWidth = DisplayUtils.getScreenWidth(context)
+                        parentHeight = config.displayHeight.getDisplayRealHeight(context)
+                        Logger.e("屏幕方向", "竖屏宽: "+parentWidth)
+                        Logger.e("屏幕方向", "竖屏高: "+parentHeight)
                     }
                     Configuration.ORIENTATION_UNDEFINED -> {
                         // 未定义方向

@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -13,6 +14,7 @@ import com.lzf.easyfloat.data.FloatConfig
 import com.lzf.easyfloat.enums.ShowPattern
 import com.lzf.easyfloat.enums.SidePattern
 import com.lzf.easyfloat.utils.DisplayUtils
+import com.lzf.easyfloat.utils.Logger
 import kotlin.math.max
 import kotlin.math.min
 
@@ -211,16 +213,19 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
 
         if (Build.VERSION.SDK_INT >= 31) {
             if (config.forceLandscape) {
-                parentHeight = DisplayUtils.getScreenWidth(context)
-                parentWidth = config.displayHeight.getDisplayRealHeight(context)
+                parentHeight = DisplayUtils.getScreenWidth(context.applicationContext)
+                parentWidth = config.displayHeight.getDisplayRealHeight(context.applicationContext)
             } else {
-                parentWidth = DisplayUtils.getScreenWidth(context)
-                parentHeight = config.displayHeight.getDisplayRealHeight(context)
+                parentWidth = DisplayUtils.getScreenWidth(context.applicationContext)
+                parentHeight = config.displayHeight.getDisplayRealHeight(context.applicationContext)
             }
         } else {
             parentWidth = DisplayUtils.getScreenWidth(context)
             parentHeight = config.displayHeight.getDisplayRealHeight(context)
         }
+
+        Logger.e("屏幕方向", "初始化宽: "+parentWidth)
+        Logger.e("屏幕方向", "初始化高: "+parentHeight)
 
         // 屏幕宽高需要每次获取，可能会有屏幕旋转、虚拟导航栏的状态变化
 //        parentWidth = DisplayUtils.getScreenWidth(context)
