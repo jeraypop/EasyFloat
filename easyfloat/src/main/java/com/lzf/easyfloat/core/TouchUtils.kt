@@ -27,8 +27,14 @@ internal class TouchUtils(val context: Context, val config: FloatConfig) {
     private var parentRect: Rect = Rect()
 
     // 悬浮的父布局高度、宽度
-    private var parentHeight = 0
-    private var parentWidth = 0
+//    private var parentHeight = 0
+//    private var parentWidth = 0
+
+    companion object {
+        var parentWidth = 0
+        var parentHeight = 0
+    }
+
 
     // 四周坐标边界值
     private var leftBorder = 0
